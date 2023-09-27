@@ -28,16 +28,19 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
-
+/*
+old wihtout controllers
 Route.get('login', async ({ view }) => {
   // tester connexion in database
   // const users = await Database.query().from('users')
   // console.log(users)
   return view.render('login')
 })
-
+*/
+Route.get('login', 'LoginController.create')
+/*
+old without controllers
 import LoginValidator from 'App/Validators/LoginValidator'
-
 Route.post('/login', async ({ request, auth, response, session }) => {
   //usage du validator
   const { pseudo, password } = await request.validate(LoginValidator)
@@ -59,3 +62,5 @@ Route.post('/login', async ({ request, auth, response, session }) => {
     response.redirect().back()
   }
 })
+*/
+Route.post('login', 'LoginController.store')
