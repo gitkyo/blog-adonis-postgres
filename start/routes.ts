@@ -36,9 +36,16 @@ Route.get('login', async ({ view }) => {
   return view.render('login')
 })
 
-Route.post('/login', async ({ request, auth, response }) => {
-  const pseudo = request.input('pseudo')
-  const password = request.input('password')
+import LoginValidator from 'App/Validators/LoginValidator'
+
+Route.post('/login', async ({ request, auth, response, session }) => {
+  //usage du validator
+  const { pseudo, password } = await request.validate(LoginValidator)
+
+  // pas d'usage du validator
+  // const pseudo = request.input('pseudo')
+  // const password = request.input('password')
+
   //test hash password
   // const password = await Hash.make(request.input('password'))
 
@@ -48,6 +55,7 @@ Route.post('/login', async ({ request, auth, response }) => {
     response.redirect('/')
   } catch (error) {
     console.log('Login failed')
+    session.flash('auth', 'Authentication impossible')
     response.redirect().back()
   }
 })

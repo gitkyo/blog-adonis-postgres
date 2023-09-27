@@ -1,6 +1,6 @@
 import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-
+import { rules } from '@ioc:Adonis/Core/Validator'
 export default class LoginValidator {
   constructor(protected ctx: HttpContextContract) {}
 
@@ -23,7 +23,10 @@ export default class LoginValidator {
    *     ])
    *    ```
    */
-  public schema = schema.create({})
+  public schema = schema.create({
+    pseudo: schema.string({ trim: true }, [rules.exists({ table: 'users', column: 'pseudo' })]),
+    password: schema.string(),
+  })
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
@@ -36,5 +39,12 @@ export default class LoginValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  // public messages: CustomMessages = {}
+  public messages = {
+    'pseudo.string': 'Le pseudo doit être une chaîne de caractères',
+    'pseudo.required': 'Le pseudo est requis',
+    'pseudo.exists': "Le pseudo n'existe pas",
+    'password.string': 'Le mot de passe doit être une chaîne de caractères',
+    'password.required': 'Le mot de passe est requis',
+  }
 }
