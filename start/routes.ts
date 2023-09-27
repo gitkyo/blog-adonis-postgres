@@ -19,7 +19,35 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+// test hash password
+// import Hash from '@ioc:Adonis/Core/Hash'
+
+// test connexion à la base de données
+// import Database from '@ioc:Adonis/Lucid/Database'
 
 Route.get('/', async ({ view }) => {
   return view.render('welcome')
+})
+
+Route.get('login', async ({ view }) => {
+  // tester connexion in database
+  // const users = await Database.query().from('users')
+  // console.log(users)
+  return view.render('login')
+})
+
+Route.post('/login', async ({ request, auth, response }) => {
+  const pseudo = request.input('pseudo')
+  const password = request.input('password')
+  //test hash password
+  // const password = await Hash.make(request.input('password'))
+
+  try {
+    await auth.attempt(pseudo, password)
+    console.log('Login success')
+    response.redirect('/')
+  } catch (error) {
+    console.log('Login failed')
+    response.redirect().back()
+  }
 })
