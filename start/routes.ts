@@ -64,3 +64,5 @@ Route.post('/login', async ({ request, auth, response, session }) => {
 })
 */
 Route.post('login', 'LoginController.store')
+
+Route.resource('articles', 'ArticlesController')
